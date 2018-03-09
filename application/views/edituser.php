@@ -39,7 +39,7 @@
                                 <div id="msg"><strong></strong></div>
                             </div>
                             <div class="form-body">
-                                    <input type="hidden" class="form-control" name="u_id"value="<?php echo isset($users->u_id) ? $users->u_id : ''; ?>">
+                                <input type="hidden" class="form-control" name="u_id"value="<?php echo isset($users->u_id) ? $users->u_id : ''; ?>">
                                 <div class="form-group">
                                     <label for="firstname">First Name</label>
                                     <input type="text" class="form-control" id="u_firstname" name="u_firstname" placeholder="First Name" value="<?php echo isset($users->u_firstname) ? $users->u_firstname : ''; ?>">
@@ -72,7 +72,8 @@
                                     <textarea name="u_about" rows="5" class="form-control"><?php echo isset($users->u_about) ? $users->u_about : ''; ?></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" id="btnSave" class="btn btn-primary">Update</button>
+                                    <button type="submit" id="btnSave" class="btn btn-primary">Update</button> &nbsp;&nbsp;&nbsp;
+                                    <a href="<?php echo site_url('users/userListView');?>" class="btn btn-warning">Back</a>
                                 </div>
                             </div>
                         </form>
@@ -104,20 +105,27 @@
                             email: true
                         }
                     },
-                    submitHandler: function (form) {
+                    submitHandler: function (form,e) {
+                        e.preventDefault();
+                        var formData = new FormData(form);
+//                        console.log(formData);
                         $.ajax({
                             url: "<?php echo site_url('users/editData') ?>",
                             type: "POST",
                             data: $('#form').serialize(),
+//                            data: formData,
                             dataType: "JSON",
                             success: function (data) {
                                 if (data.status == '0') {
-                                    window.location.href = "<?php echo site_url('users/userListView');?>";
+                                    window.location.href = "<?php echo site_url('users/userListView'); ?>";
                                 } else {
                                     $('#alert_msg').removeClass('hide alert-success').addClass('alert-danger');
                                     $('#msg').text(data.message);
                                 }
-                            }
+                            },
+                            cache: false,
+                            contentType: false,
+                            processData: false
                         });
                     }
                 });
