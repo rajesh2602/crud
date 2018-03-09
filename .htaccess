@@ -1,0 +1,10 @@
+<IfModule authz_core_module>
+    RewriteEngine on
+	RewriteCond $1 !^(index\.php|resources|robots\.txt)
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php/$1 [L,QSA] 
+</IfModule>
+<IfModule mod_php5.c>
+    php_value always_populate_raw_post_data -1
+</IfModule>
