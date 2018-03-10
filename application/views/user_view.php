@@ -1,4 +1,4 @@
-<?php //p($_SESSION);                 ?>
+<?php //p($_SESSION);                  ?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -49,7 +49,7 @@
                             <td><?php echo $user['u_email']; ?></td>
                             <td><?php echo $user['u_phone']; ?></td>
                             <td><?php echo $user['u_about']; ?></td>
-                            <td><?php echo $user['u_profile']; ?></td>
+                            <td><img src="<?php echo IMAGE_PATH . "uploads/" . $user['u_profile']; ?>" width="50" height="50"></td>
                             <td>
                                 <a href="<?php echo site_url('users/editUser/' . $user['u_id']) ?>"  class="btn btn-warning" ><i class="glyphicon glyphicon-pencil"></i></a>
                                 <a onclick="deleteUser('<?php echo $user['u_id']; ?>')" class="btn btn-danger" ><i class="glyphicon glyphicon-remove"></i></a>

@@ -112,8 +112,8 @@
                         $.ajax({
                             url: "<?php echo site_url('users/editData') ?>",
                             type: "POST",
-                            data: $('#form').serialize(),
-//                            data: formData,
+//                            data: $('#form').serialize(),
+                            data: formData,
                             dataType: "JSON",
                             success: function (data) {
                                 if (data.status == '0') {

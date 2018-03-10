@@ -2,6 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 define('HTTP_UPLOAD_IMPORT_PATH', 'http://' . $_SERVER['HTTP_HOST'] . '/codeigniter/');
+define('IMAGE_PATH', 'http://' . $_SERVER['HTTP_HOST'] . '/codeigniter/');
 function p($data, $exit = 0) {
     echo "<pre>";
     print_r($data);

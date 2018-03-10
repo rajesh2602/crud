@@ -9,6 +9,7 @@ class Users
         parent::__construct();
         $this->load->helper('url');
         $this->load->helper('file');
+        $this->load->helper('form');
         $this->load->library('session');
         $this->load->model('user_model');
         $this->load->library("excel");
@@ -23,6 +24,14 @@ class Users
         $email = $this->input->post('u_email');
         $checkEmail = $this->user_model->checkEmail($email);
         if (empty($checkEmail)) {
+            if (isset($_FILES['u_profile']['name']) && $_FILES['u_profile']['name'] != '') {
+                $fileName = $_FILES['u_profile']['name'];
+                $tempName = $_FILES['u_profile']['tmp_name'];
+                $extension = explode('.', $fileName);
+                $newFileName = time() . $extension[0] . "." . $extension[1];
+                move_uploaded_file($_FILES['u_profile']['tmp_name'], 'uploads/' . $newFileName);
+                $postData['u_profile'] = $newFileName;
+            }
             $this->user_model->insertUser($postData);
             echo json_encode(array('status' => 0, 'message' => 'User Registered Done Successfully.'));
         } else {
@@ -85,6 +94,15 @@ class Users
 
     public function editData() {
         $postData = $this->input->post();
+        if (isset($_FILES['u_profile']['name']) && $_FILES['u_profile']['name'] != '') {
+            $fileName = $_FILES['u_profile']['name'];
+            $tempName = $_FILES['u_profile']['tmp_name'];
+            $extension = explode('.', $fileName);
+            $newFileName = time() . $extension[0] . "." . $extension[1];
+            move_uploaded_file($_FILES['u_profile']['tmp_name'], 'uploads/' . $newFileName);
+            $postData['u_profile'] = $newFileName;
+        }
+
         $this->user_model->updateData($postData);
         echo json_encode(array('status' => 0, 'message' => 'Update Done SuccessFully'));
     }

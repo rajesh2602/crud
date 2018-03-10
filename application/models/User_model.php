@@ -36,6 +36,7 @@ class User_model
         $dat['u_password'] = md5($data['u_password']);
         $dat['u_phone'] = $data['u_phone'];
         $dat['u_about'] = $data['u_about'];
+        $dat['u_profile'] = $data['u_profile'];
         $this->db->insert('users', $dat);
         return $this->db->insert_id();
     }
@@ -62,6 +63,7 @@ class User_model
         }
         $dat['u_phone'] = $data['u_phone'];
         $dat['u_about'] = $data['u_about'];
+        $dat['u_profile'] = $data['u_profile'];
         $id = $data['u_id'];
         $this->db->where('u_id', $id);
         $this->db->update('users', $dat);

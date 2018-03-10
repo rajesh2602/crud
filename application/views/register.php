@@ -120,11 +120,14 @@
                             required: true
                         }
                     },
-                    submitHandler: function (form) {
+                    submitHandler: function (form,e) {
+                        e.preventDefault();
+                        var formData = new FormData(form);
                         $.ajax({
                             url: "<?php echo site_url('users/register') ?>",
                             type: "POST",
-                            data: $('#form').serialize(),
+//                            data: $('#form').serialize(),
+                            data: formData,
                             dataType: "JSON",
                             success: function (data) {
                                 if (data.status == '0') {
@@ -135,7 +138,10 @@
                                     $('#alert_msg').removeClass('hide alert-success').addClass('alert-danger');
                                     $('#msg').text(data.message);
                                 }
-                            }
+                            },
+                            cache: false,
+                            contentType: false,
+                            processData: false
                         });
                     }
                 });
