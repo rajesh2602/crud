@@ -68,5 +68,27 @@ class User_model
         $this->db->where('u_id', $id);
         $this->db->update('users', $dat);
     }
-
+    
+    public function insertProduct($data) {
+        $this->db->insert('product', $data);
+        return $this->db->insert_id();
+    }
+    
+    public function getProduct($id = '') {
+        $where = '';
+        if (!empty($id)) {
+            $where = ' WHERE prod_id = ' . $id;
+        }
+        $sql = "SELECT * FROM product" . $where;
+        $query = $this->db->query($sql);
+        if (!is_null($id) && strlen($id) > 0) {
+            return $query->row();
+        } else {
+            return $query->result_array();
+        }
+    }
+    public function deleteProduct($id) {
+        $this->db->where('prod_id', $id);
+        $this->db->delete('product');
+    }
 }

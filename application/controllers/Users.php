@@ -107,6 +107,10 @@ class Users
         echo json_encode(array('status' => 0, 'message' => 'Update Done SuccessFully'));
     }
 
+    public function addMoreoption() {
+        $this->load->view('add_more');
+    }
+
     public function createXLS() {
         // create file name
         $fileName = time() . '.xlsx';
@@ -138,6 +142,41 @@ class Users
         // download file
         header("Content-Type: application/vnd.ms-excel");
         redirect(HTTP_UPLOAD_IMPORT_PATH . 'users_' . $fileName);
+    }
+
+    public function productAdd() {
+        $totalRecords = count($this->input->post('prod_name'));
+        for ($i = 0; $i < $totalRecords; $i++) {
+            $postData['prod_name'] = $this->input->post('prod_name')[$i] ? $this->input->post('prod_name')[$i] : '';
+            $postData['prod_quantity'] = $this->input->post('prod_quantity')[$i] ? $this->input->post('prod_quantity')[$i] : '';
+            $postData['prod_price'] = $this->input->post('prod_price')[$i] ? $this->input->post('prod_price')[$i] : '';
+            $postData['prod_stock'] = $this->input->post('prod_stock')[$i] ? $this->input->post('prod_stock')[$i] : '';
+            if (isset($_FILES['prod_image']['name'][$i]) && $_FILES['prod_image']['name'][$i] != '') {
+                $fileName = $_FILES['prod_image']['name'][$i];
+                $tmpName = $_FILES['prod_image']['tmp_name'][$i];
+                $extension = explode('.', $fileName);
+                $newFileName = time() . $extension[0] . "." . $extension[1];
+                move_uploaded_file($_FILES['prod_image']['tmp_name'][$i], 'uploads/' . $newFileName);
+                $postData['prod_image'] = $newFileName;
+            }
+            $this->user_model->insertProduct($postData);
+        }
+        echo json_encode(array('status' => 0, 'message' => 'Product Added Successfully'));
+    }
+
+    public function productListView() {
+        if ($this->session->userdata('logged_in') == TRUE) {
+            $data['products'] = $this->user_model->getProduct();
+            $this->load->view('product_view', $data);
+        } else {
+            redirect('users/login');
+            exit;
+        }
+    }
+    
+    public function deleteProduct($id) {
+        $this->user_model->deleteProduct($id);
+        echo json_encode(array('status' => 0, 'message' => 'Product Deleted Successfully'));
     }
 
 }
