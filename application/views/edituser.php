@@ -102,7 +102,8 @@
                         },
                         u_email: {
                             required: true,
-                            email: true
+                            email: true,
+                            
                         }
                     },
                     submitHandler: function (form,e) {

@@ -51,6 +51,8 @@
                                     <button type="submit" id="btnSave" class="btn btn-primary">Login</button> &nbsp;&nbsp;&nbsp;
                                     <a href="<?php echo site_url('users'); ?>" class="btn btn-success  " data-dismiss="modal">Register</a>
                                 </div>
+                                <hr>
+                                <a href="<?php echo $google_login_url; ?>"><img src="<?php echo base_url('assests/gplus.png'); ?>" width="250px"></a>
                             </div>
                         </form>
                     </div>
@@ -86,7 +88,7 @@
                             dataType: "JSON",
                             success: function (data) {
                                 if (data.status == '0') {
-                                    window.location.href = "<?php echo site_url('users/userListView');?>";
+                                    window.location.href = "<?php echo site_url('users/userListView'); ?>";
 
                                 } else {
                                     $('#alert_msg').removeClass('hide').addClass('alert-danger');

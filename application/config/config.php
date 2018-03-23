@@ -32,8 +32,8 @@ function p($data, $exit = 0) {
   | a PHP script and you can easily do that on your own.
   |
  */
-$config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/codeigniter/';
-$config['site_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/codeigniter/';
+$config['base_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/rajesh_ci/crud/';
+$config['site_url'] = 'http://' . $_SERVER['HTTP_HOST'] . '/rajesh_ci/crud/';
 
 
 /*
