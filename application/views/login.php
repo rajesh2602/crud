@@ -52,7 +52,7 @@
                                     <a href="<?php echo site_url('users'); ?>" class="btn btn-success  " data-dismiss="modal">Register</a>
                                 </div>
                                 <hr>
-                                <a href="<?php echo $google_login_url; ?>"><img src="<?php echo base_url('assests/gplus.png'); ?>" width="250px"></a>
+                                <!--<a href="<?php echo $google_login_url; ?>"><img src="<?php echo base_url('assests/gplus.png'); ?>" width="250px"></a>-->
                             </div>
                         </form>
                     </div>
