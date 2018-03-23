@@ -217,7 +217,7 @@ class Users
             $this->user_model->insertUser($postData);
             redirect('users/userListView');
         } else {
-            redirect('users');
+            redirect('users/userListView');
         }
         // redirect(base_url());
     }
