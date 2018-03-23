@@ -30,13 +30,14 @@ class User_model
     }
 
     public function insertUser($data) {
-        $dat['u_firstname'] = $data['u_firstname'];
-        $dat['u_lastname'] = $data['u_lastname'];
-        $dat['u_email'] = $data['u_email'];
-        $dat['u_password'] = md5($data['u_password']);
-        $dat['u_phone'] = $data['u_phone'];
-        $dat['u_about'] = $data['u_about'];
-        $dat['u_profile'] = $data['u_profile'];
+        $dat['u_firstname'] = isset($data['u_firstname']) ? $data['u_firstname'] : '';
+        $dat['u_lastname'] = isset($data['u_lastname']) ? $data['u_lastname'] : '';
+        $dat['u_email'] = isset($data['u_email']) ? $data['u_email'] : '';
+        $dat['u_password'] = isset($data['u_password']) ? md5($data['u_password']) : '';
+        $dat['u_phone'] = isset($data['u_phone']) ? $data['u_phone'] : '';
+        $dat['u_about'] = isset($data['u_about']) ? $data['u_about'] : '';
+        $dat['u_auth'] = isset($data['u_auth']) ? $data['u_auth'] : '0';
+        $dat['u_profile'] = isset($data['u_profile']) ? $data['u_profile'] : '';
         $this->db->insert('users', $dat);
         return $this->db->insert_id();
     }
@@ -63,17 +64,20 @@ class User_model
         }
         $dat['u_phone'] = $data['u_phone'];
         $dat['u_about'] = $data['u_about'];
-        $dat['u_profile'] = $data['u_profile'];
+        if (!empty($data['u_profile'])) {
+            $dat['u_profile'] = $data['u_profile'];
+        }
+
         $id = $data['u_id'];
         $this->db->where('u_id', $id);
         $this->db->update('users', $dat);
     }
-    
+
     public function insertProduct($data) {
         $this->db->insert('product', $data);
         return $this->db->insert_id();
     }
-    
+
     public function getProduct($id = '') {
         $where = '';
         if (!empty($id)) {
@@ -87,8 +91,10 @@ class User_model
             return $query->result_array();
         }
     }
+
     public function deleteProduct($id) {
         $this->db->where('prod_id', $id);
         $this->db->delete('product');
     }
+
 }

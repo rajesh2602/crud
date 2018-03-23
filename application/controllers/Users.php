@@ -36,6 +36,7 @@ class Users
                 move_uploaded_file($_FILES['u_profile']['tmp_name'], 'uploads/' . $newFileName);
                 $postData['u_profile'] = $newFileName;
             }
+
             $this->user_model->insertUser($postData);
             echo json_encode(array('status' => 0, 'message' => 'User Registered Done Successfully.'));
         } else {
@@ -44,16 +45,11 @@ class Users
     }
 
     public function login() {
-        if (isset($_GET['code'])) {
-            $this->googleplus->getAuthenticate();
-            $this->session->set_userdata('login', true);
-            $this->session->set_userdata('user_profile', $this->googleplus->getUserInfo());
-            // redirect('welcome/profile');
-        }
-
-        $contents['login_url'] = $this->googleplus->loginURL();
         //$this->load->view('welcome_message', $contents);
-        $this->load->view('login', $contents);
+        $data['google_login_url'] = $this->google->get_login_url();
+        //$this->load->view('home', $data);
+        //$this->load->view('welcome_message', $contents);
+        $this->load->view('login', $data);
     }
 
     public function checkLogin() {
@@ -79,7 +75,7 @@ class Users
     }
 
     public function userListView() {
-        if ($this->session->userdata('logged_in') == TRUE) {
+        if ($this->session->userdata('logged_in') == TRUE || $this->session->userdata('sess_logged_in') == 1) {
             $data['users'] = $this->user_model->getUsers();
             $this->load->view('user_view', $data);
         } else {
@@ -115,7 +111,6 @@ class Users
             move_uploaded_file($_FILES['u_profile']['tmp_name'], 'uploads/' . $newFileName);
             $postData['u_profile'] = $newFileName;
         }
-
         $this->user_model->updateData($postData);
         echo json_encode(array('status' => 0, 'message' => 'Update Done SuccessFully'));
     }
@@ -207,10 +202,26 @@ class Users
             'sess_logged_in' => 1
         );
         $this->session->set_userdata($session_data);
-        redirect(base_url());
+        if (empty($checkEmail)) {
+            if (isset($google_data['link']) && $google_data['link'] != '') {
+                $profile = explode('?', $google_data['profile_pic']);
+                getImageFromURL($profile[0]);
+                $postData['u_profile'] = time() . '_image.jpg';
+            }
+            $fullname = explode(' ', $google_data['name']);
+            $postData['u_firstname'] = isset($fullname[0]) ? $fullname[0] : '';
+            $postData['u_lastname'] = isset($fullname[1]) ? $fullname[1] : '';
+            $postData['u_email'] = $google_data['email'];
+            $postData['u_auth'] = '1';
+            $this->user_model->insertUser($postData);
+            redirect('users/userListView');
+        } else {
+            redirect('users');
+        }
+        // redirect(base_url());
     }
-    
-     public function logout() {
+
+    public function logout() {
         session_destroy();
         unset($_SESSION['access_token']);
         $session_data = array(
