@@ -202,6 +202,7 @@ class Users
             'sess_logged_in' => 1
         );
         $this->session->set_userdata($session_data);
+        $checkEmail = $this->user_model->checkEmail($google_data['email']);
         if (empty($checkEmail)) {
             if (isset($google_data['link']) && $google_data['link'] != '') {
                 $profile = explode('?', $google_data['profile_pic']);
